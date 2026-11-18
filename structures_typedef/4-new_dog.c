@@ -2,6 +2,30 @@
 #include <stdlib.h>
 
 /**
+ * copy_string - creates a copy of a string
+ * @str: string to copy
+ *
+ * Return: pointer to copy, or NULL on failure
+ */
+static char *copy_string(char *str)
+{
+	char *copy;
+	int i, len = 0;
+
+	while (str[len] != '\0')
+		len++;
+
+	copy = malloc(len + 1);
+	if (copy == NULL)
+		return (NULL);
+
+	for (i = 0; i <= len; i++)
+		copy[i] = str[i];
+
+	return (copy);
+}
+
+/**
  * new_dog - creates a new dog
  * @name: name of the dog
  * @age: age of the dog
@@ -12,44 +36,28 @@
 dog_t *new_dog(char *name, float age, char *owner)
 {
 	dog_t *dog;
-	int i, name_len, owner_len;
 
 	if (name == NULL || owner == NULL)
 		return (NULL);
-
-	name_len = 0;
-	owner_len = 0;
-
-	while (name[name_len] != '\0')
-		name_len++;
-
-	while (owner[owner_len] != '\0')
-		owner_len++;
 
 	dog = malloc(sizeof(dog_t));
 	if (dog == NULL)
 		return (NULL);
 
-	dog->name = malloc(name_len + 1);
+	dog->name = copy_string(name);
 	if (dog->name == NULL)
 	{
 		free(dog);
 		return (NULL);
 	}
 
-	dog->owner = malloc(owner_len + 1);
+	dog->owner = copy_string(owner);
 	if (dog->owner == NULL)
 	{
 		free(dog->name);
 		free(dog);
 		return (NULL);
 	}
-
-	for (i = 0; i <= name_len; i++)
-		dog->name[i] = name[i];
-
-	for (i = 0; i <= owner_len; i++)
-		dog->owner[i] = owner[i];
 
 	dog->age = age;
 
